@@ -1,0 +1,49 @@
+$background: #444;
+$text: #fff;
+$success: #597526;
+$warning: #e98000;
+$failure: #dc5945;
+$error: #ec663c;
+$unknown: #b5b5b5;
+
+.widget-citrixusers {
+  li {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 25px;
+    background-color: $background;
+
+    i {
+      font-size: 20px;
+    }
+
+    h2 {
+      font-size: 60px;
+      text-transform: none;
+      margin-bottom:-5px
+    }
+    .active {
+      font-size: 60px
+    }
+
+    h3 {
+      color: #888;
+      font-size: 20px;
+    }
+
+    h4 {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    p &.updated-at {
+      font-size: 10px;
+    }
+  
+
+  }
+}
