@@ -2,9 +2,13 @@ require 'net/http'
 require 'open-uri'
 require 'json'
 
+########################################################################################################
+# make sure you edit these variables to fit your environment
 apiKey = 'xxxxxxxxxxxx'
 nagiosHOST = 'x.x.x.x'
 serviceName = 'Citrix Users'
+########################################################################################################
+
 citrixUsersURL = 'http://' + nagiosHOST + '/nagiosxi/api/v1/objects/servicestatus?apikey=' + apiKey + '&name=' + serviceName
 
 SCHEDULER.every "60s", first_in: 0 do |job|
