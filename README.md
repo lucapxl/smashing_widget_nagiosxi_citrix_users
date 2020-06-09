@@ -15,9 +15,9 @@ The numbers in the tiles represent the following:
 ![citrix](https://github.com/lucapxl/smashing_widget_nagiosxi_citrix_users/blob/master/images/example.png)
 
 ## Installation and Configuration
-This widget uses `open-uri` and `json`. make sure to add them in your dashboard Gemfile
+This widget uses `rest-client` and `json`. make sure to add them in your dashboard Gemfile
 ```Gemfile
-gem 'open-uri'
+gem 'rest-client'
 gem 'json'
 ```
 

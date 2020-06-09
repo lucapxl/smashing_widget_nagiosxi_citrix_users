@@ -1,5 +1,4 @@
-require 'net/http'
-require 'open-uri'
+require 'rest-client'
 require 'json'
 
 ########################################################################################################
@@ -9,22 +8,32 @@ nagiosHOST = 'x.x.x.x'
 serviceName = 'Citrix Users'
 ########################################################################################################
 
-citrixUsersURL = 'http://' + nagiosHOST + '/nagiosxi/api/v1/objects/servicestatus?apikey=' + apiKey + '&name=' + serviceName
+citrixUsersURL = 'https://' + nagiosHOST + '/nagiosxi/api/v1/objects/servicestatus?apikey=' + apiKey + '&name=' + serviceName
 
 SCHEDULER.every "60s", first_in: 0 do |job|
     totalServer = totalActive = totalDisco = totalHung = 0
-    
-    resp = Net::HTTP.get_response(URI.parse(citrixUsersURL))
-    jsonData = resp.body
-    citrixUsers = JSON.parse(jsonData)
+    citrixUsers = ""
+    resp = RestClient::Request.new({
+        method: :get,
+        url: citrixUsersURL,
+        verify_ssl: false
+    }).execute do |resp, request, result|
+        case resp.code
+        when 200
+            citrixUsers = JSON.parse(resp.to_str)
+        else
+            fail "error: #{resp.to_str}"
+        end
+    end        
+
     citrixUsers['servicestatus'].each do |child|
-        active = child['performance_data'][/active=(.*?);;/,1].to_i
+        active = child['perfdata'][/active=(.*?);;/,1].to_i
         totalActive += active
 
-        disconnected = child['performance_data'][/disconnected=(.*?);;/,1].to_i
+        disconnected = child['perfdata'][/disconnected=(.*?);;/,1].to_i
         totalDisco += disconnected
 
-        hung = child['performance_data'][/hung=(.*?);;/,1].to_i
+        hung = child['perfdata'][/hung=(.*?);;/,1].to_i
         totalHung += hung
 
         if totalServer < (active + disconnected + hung) 
